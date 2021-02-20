@@ -8,7 +8,7 @@ export function App() {
       <header className="App-header">
         <img src="/logo.svg" style={{maxHeight: '40vmin'}} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/demo/app.tsx</code> and saved to reload.
+          Edit <code>src/demo/app.tsx</code> and save to reload.
         </p>
         <a
           className="App-link"
