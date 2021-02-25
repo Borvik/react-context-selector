@@ -4,7 +4,8 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "start": "webpack serve"
+    "start": "webpack serve",
+    "build:scss": "node scripts/build-scss.js"
   },
   "devDependencies": {
     "@babel/core": "^7.12.17",
@@ -17,6 +18,7 @@
     "fork-ts-checker-webpack-plugin": "^6.1.0",
     "html-webpack-plugin": "^5.2.0",
     "http-server": "^0.12.3",
+    "mkdirp": "^1.0.4",
     "node-sass": "^5.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
