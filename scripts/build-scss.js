@@ -27,6 +27,6 @@ sass.render({
   }
   fs.writeFileSync(outFile, result.css);
   fs.writeFileSync(outFile + '.map', result.map);
-  console.log('Building css... completed');
+  console.log('  ...completed');
   process.exit(0);
 });

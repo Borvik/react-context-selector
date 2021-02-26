@@ -11,5 +11,12 @@
     "jsx": "react",
     "declaration": true,
     "outDir": "./dist"
-  }
+  },
+  "include": [
+    "src/library/**/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "src/demo/**/*"
+  ]
 }
