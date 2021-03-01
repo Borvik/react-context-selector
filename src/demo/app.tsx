@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TestComponent } from '../library';
 import './style.scss';
 
 export function App() {
@@ -19,6 +20,9 @@ export function App() {
           Learn React
         </a>
         <button onClick={() => setC(d => d + 1)}>Clicked: {c}</button>
+        <TestComponent>
+          <div>Some Child</div>
+        </TestComponent>
       </header>
     </div>
   )
