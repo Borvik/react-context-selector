@@ -47,6 +47,14 @@ module.exports = {
             loader: 'sass-loader',
             options: {
               sourceMap: true,
+              implementation: require('sass'),
+              sassOptions: (loaderContext) => {
+                const { rootContext } = loaderContext;
+                const modulesPath = path.join(rootContext, 'node_modules');
+                return {
+                  includePaths: [ modulesPath ]
+                };
+              }
             }
           }
         ]
@@ -60,8 +68,6 @@ module.exports = {
 
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public/static'),
-    publicPath: '/',
   },
 
   plugins: [

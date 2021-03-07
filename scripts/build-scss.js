@@ -1,13 +1,14 @@
 const path = require('path');
 const fs = require('fs');
-const sass = require('node-sass');
+const sass = require('sass');
 const mkdirp = require('mkdirp');
-const tildeImporter = require('node-sass-tilde-importer');
 
-const distFolder = path.join(__dirname, '..', 'dist');
+const rootFolder = path.join(__dirname, '..');
+const distFolder = path.join(rootFolder, 'dist');
 const rawFile = 'src/library/index.scss';
-const actualFile = path.join(__dirname, '..', rawFile);
-const outFile = path.join(__dirname, '..', 'dist/index.css');
+const actualFile = path.join(rootFolder, rawFile);
+const outFile = path.join(rootFolder, 'dist/index.css');
+const nodeModulesFolder = path.join(rootFolder, 'node_modules');
 
 if (!fs.existsSync(actualFile)) {
   console.log('No css to build');
@@ -19,9 +20,9 @@ mkdirp.sync(distFolder);
 sass.render({
   file: actualFile,
   outFile,
-  outputStyle: 'nested',
+  outputStyle: 'expanded',
   sourceMap: true,
-  importer: [tildeImporter],
+  includePaths: [nodeModulesFolder],
 }, (err, result) => {
   if (err) {
     console.error(err.message);
