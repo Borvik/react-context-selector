@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
-import { TestComponent } from '../library';
+import { TestApp as NormalTestApp } from './normal-context';
+import { TestApp as SelectorTestApp } from './selector-context';
 import './style.scss';
 
+const ModeOptions = {
+  none: 'No Example',
+  context: 'Normal React Context',
+  selector_context: 'Selector Context',
+} as const;
+type ModeOptionsEnum = keyof typeof ModeOptions;
+
+const ModeKeys = Object.keys(ModeOptions) as (keyof typeof ModeOptions)[];
+
 export function App() {
-  const [c, setC] = useState(0);
+  const [mode, setMode] = useState<ModeOptionsEnum>('none');
+
   return (
     <div className="App">
       <header className="App-header">
         <img src="/logo.svg" style={{maxHeight: '40vmin'}} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/demo/app.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button onClick={() => setC(d => d + 1)}>Clicked: {c}</button>
-        <TestComponent>
-          <div>Some Child</div>
-        </TestComponent>
+        <div>
+          <select onChange={(e) => setMode(e.target.value as ModeOptionsEnum)} value={mode}>
+            {ModeKeys.map(k => (<option key={k} value={k}>{ModeOptions[k]}</option>))}
+          </select>
+        </div>
+        {mode === 'context' && <NormalTestApp />}
+        {mode === 'selector_context' && <SelectorTestApp />}
       </header>
     </div>
   )

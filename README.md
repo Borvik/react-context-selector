@@ -1,13 +1,74 @@
-# react-component-library
+# react-selector-context
 
-A bare bones component library for react, used to jumpstart the creation of a react component library.
+What is `react-selector-context`?
 
-It includes a demo app for testing your component as you build it, the demo app is run with webpack dev server and supports (will support) Fast Refresh/Hot Reloading.
+Simply put, it provides for the ability to use a react context in a more redux like manner.
 
-The folder `src/library` should contain your actual library code. This is what gets built for publishing (the demo app gets ignored).
+There is one big advantage to using some like react-redux. Re-render performance.
 
-Because of the number of different ways styles can be imported into any given React app, I felt it best to keep it simple and just provide a single stylesheet as an output that others could import.  Normal stylesheets also allow the best capability to override the styles (vs class names being generated) - which was the whole point of Cascading Style Sheets.
+With react-redux, any changes to the global state only trigger rerenders to the components listening _to the portion that changed_ - all while still being "one context".
 
-**DO NOT** import styles inside of library (js/ts) code. When built those imports would stick around, and could cause issues in application that use the component (depending on how they do their styles).
+With the standard context provided by react, _any component_ that uses the context (the consumer or the `useContext` hook) re-renders any time anything on the context changed.
 
-Webpack _could_ be used to build the library and handle the styles, but it adds unnecessary boilerplate code that will just get duplicated in the consuming application (most packer libraries include their own boilerplate in some form or another).
+This attempts to bring the re-render performance of react-redux to a react context.
+
+This component and examples were inspired by an article by [Daniel Merrill](https://medium.com/async-la/how-useselector-can-trigger-an-update-only-when-we-want-it-to-a8d92306f559).
+
+# Usage
+
+The usage is very similar to the usage of the context api, which you can read [in their documentation](https://reactjs.org/docs/context.html).
+
+The difference, you cannot use a context created via the context api, and the context returned from _this_ `createContext` does not provide a consumer component, but rather a hook to go with it.
+
+```tsx
+import { createContext } from '@borvik/react-selector-context';
+
+const { Provider, useSelector } = createContext({
+  clicks: 0,
+  time: 0,
+  incrementClick: (_: number) => {},
+});
+```
+
+`createContext` takes as it's only parameter the initial state of context - which behaves slightly differently than the built-in.  With the built-in api, the initial state provided here is used when a `Provider` component isn't rendered.  With this one, the `Provider` component is _required_, and the initial state is used if a value is not passed to the `Provider`.
+
+With the exception of the `value` now being optional - the usage of the `Provider` is essentially the same.
+
+```tsx
+const SomeComponent: React.FC = ({ children }) => {
+  const [clicks, setClicks] = useState(0);
+  const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(v => v + 1), 1000);
+    return () => clearInterval(interval);
+  }, [setTime]);
+
+  const incrementClick = useCallback((by: number) => {
+    setClicks(v => v + by);
+  }, [setClicks]);
+
+  const value = useMemo(() => ({
+    clicks,
+    time,
+    incrementClick,
+  }), [clicks, time, incrementClick]);
+
+  return <Provider value={value}>{children}</Provider>
+}
+```
+
+`createContext` also returns a paired `useSelector` hook. This hook is similar to the same hook found in `react-redux` and takes a single callback function to return the parts of the context you are interested in.
+
+```tsx
+const Clicker: React.FC = ({}) => {
+  const { clicks, incrementClick } = useSelector(cb => ({clicks: cb.clicks, incrementClick: cb.incrementClick}));
+
+  return (
+    <div>
+      <span>Clicks: {clicks}</span>
+      <button onClick={() => incrementClick(1)}>Click Me</button>
+    </div>
+  );
+}
+```

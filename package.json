@@ -1,17 +1,14 @@
 {
-  "name": "@borvik/react-component-library",
-  "version": "1.0.0",
+  "name": "@borvik/react-selector-context",
+  "version": "0.1.0-alpha.0",
   "main": "dist/index.js",
-  "style": "dist/index.css",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
     "start": "webpack serve",
-    "build:styles": "node scripts/build-scss.js",
     "build:script": "tsc",
     "build:clean": "rimraf dist",
-    "build": "npm run build:clean && npm run build:script && npm run build:styles && npm run copy-scss",
-    "copy-scss": "copyfiles -u 2 \"src/library/**/*.scss\" dist/scss"
+    "build": "npm run build:clean && npm run build:script"
   },
   "devDependencies": {
     "@babel/core": "^7.12.17",
@@ -20,7 +17,6 @@
     "@types/react-dom": "^17.0.1",
     "@types/react-router-dom": "^5.1.7",
     "babel-loader": "^8.2.2",
-    "copyfiles": "^2.4.1",
     "css-loader": "^5.0.2",
     "fork-ts-checker-webpack-plugin": "^6.1.0",
     "html-webpack-plugin": "^5.2.0",
