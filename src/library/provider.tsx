@@ -1,19 +1,27 @@
 import React, { PropsWithChildren, useMemo, useRef } from 'react';
-import { SelectorContext, SubscriberCallback, UnsubscribeCallback } from './types';
+import { ProviderProps, SelectorInternalContext, SubscriberCallback, UnsubscribeCallback } from './types';
 import { useIsomorphicLayoutEffect } from './utils/useIsomorphicLayoutEffect';
 
-export interface ProviderProps<T> {
-  value?: T
-}
+type RefState<T> = {init: false} | {init: true, value: T};
 
-export function createProvider<T>(Context: React.Context<SelectorContext<T> | null>, initialState: T) {
-  return function Provider({ children, value }: PropsWithChildren<ProviderProps<T>>) {
+export function createProvider<T>(Context: React.Context<SelectorInternalContext<T> | null>, initialState: T) {
+  return function Provider({ children, value }: PropsWithChildren<ProviderProps<T>>): JSX.Element {
+    const originalValue = useRef<RefState<T>>({ init: false });
+
     const storeRef = useRef(value ?? initialState);
     storeRef.current = value ?? initialState;
-  
+    // const storeRef = useRef<RefState<unknown>>({ init: false });
     const subscribersRef = useRef<SubscriberCallback[]>([]);
+
+    if (!originalValue.current.init) {
+      originalValue.current = { init: true, value: storeRef.current };
+    }
   
     useIsomorphicLayoutEffect(() => {
+      // the original value shouldn't need to notify the subscribers
+      if (originalValue.current.init && originalValue.current.value === storeRef.current)
+        return;
+        
       // Notify all subscribers...
       subscribersRef.current.forEach(sub => sub());
     }, [value]);

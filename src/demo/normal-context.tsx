@@ -3,6 +3,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 const TestContext = React.createContext({
   clicks: 0,
   time: 0,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   incrementClick: (_: number) => {},
 });
 
@@ -28,7 +29,7 @@ const TestContextProvider: React.FC = ({ children }) => {
   return <TestContext.Provider value={value}>{children}</TestContext.Provider>
 }
 
-const Clicker: React.FC = ({}) => {
+const Clicker: React.FC = () => {
   console.log('Render CLICKER');
   const { clicks, incrementClick } = useContext(TestContext);
 
@@ -40,7 +41,7 @@ const Clicker: React.FC = ({}) => {
   );
 }
 
-const Timer: React.FC = ({}) => {
+const Timer: React.FC = () => {
   console.log('Render TIMER');
   const { time } = useContext(TestContext);
   return <div><span>Time: {time}</span></div>;

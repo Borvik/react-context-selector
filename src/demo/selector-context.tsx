@@ -4,6 +4,7 @@ import { createContext } from '../library';
 const { Provider, useSelector } = createContext({
   clicks: 0,
   time: 0,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   incrementClick: (_: number) => {},
 })
 
@@ -29,7 +30,7 @@ const TestContextProvider: React.FC = ({ children }) => {
   return <Provider value={value}>{children}</Provider>
 }
 
-const Clicker: React.FC = ({}) => {
+const Clicker: React.FC = () => {
   console.log('Render CLICKER');
   const { clicks, incrementClick } = useSelector(cb => ({clicks: cb.clicks, incrementClick: cb.incrementClick}));
 
@@ -41,7 +42,7 @@ const Clicker: React.FC = ({}) => {
   );
 }
 
-const Timer: React.FC = ({}) => {
+const Timer: React.FC = () => {
   console.log('Render TIMER');
   const time = useSelector(cb => cb.time);
   return <div><span>Time: {time}</span></div>;

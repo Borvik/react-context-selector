@@ -21,11 +21,11 @@ function simpleEqualityCheck(a: unknown, b: unknown): boolean {
     return false;
   }
   else if (typeof a === 'object' && typeof b === 'object') {
-    let aKeys = Object.keys(a!);
-    let bKeys = Object.keys(b!);
+    const aKeys = Object.keys(a!);
+    const bKeys = Object.keys(b!);
     if (aKeys.length !== bKeys.length) return false;
 
-    let sameKeys = aKeys.every(value => bKeys.includes(value));
+    const sameKeys = aKeys.every(value => bKeys.includes(value));
     if (!sameKeys) return false;
 
     // @ts-ignore

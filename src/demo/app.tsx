@@ -12,7 +12,7 @@ type ModeOptionsEnum = keyof typeof ModeOptions;
 
 const ModeKeys = Object.keys(ModeOptions) as (keyof typeof ModeOptions)[];
 
-export function App() {
+export function App(): JSX.Element {
   const [mode, setMode] = useState<ModeOptionsEnum>('none');
 
   return (

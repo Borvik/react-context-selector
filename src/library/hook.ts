@@ -1,12 +1,12 @@
 import { useCallback, useContext, useDebugValue, useRef, useState } from "react";
-import { SelectorContext } from "./types";
+import { SelectorCallback, SelectorInternalContext } from "./types";
 import { EqualityCheckFn, simpleEqualityCheck } from "./utils/equality";
 import { useIsomorphicLayoutEffect } from "./utils/useIsomorphicLayoutEffect";
 
-type SelectorCallback<T, R> = (state: T) => R;
+type RefState<T> = {init: false} | {init: true, value: T};
 
-export function createUseSelector<T>(Context: React.Context<SelectorContext<T> | null>) {
-  return function useSelector<R>(cb: SelectorCallback<T, R>, equalityFn: EqualityCheckFn = simpleEqualityCheck) {
+export function createUseSelector<T>(Context: React.Context<SelectorInternalContext<T> | null>) {
+  return function useSelector<R>(cb: SelectorCallback<T, R>, equalityFn: EqualityCheckFn = simpleEqualityCheck): R {
     const store = useContext(Context);
     if (!store) {
       throw new Error('Cannot use `useSelector` outside of a Provider');
@@ -16,23 +16,31 @@ export function createUseSelector<T>(Context: React.Context<SelectorContext<T> |
     const selectorRef = useRef(cb);
     selectorRef.current = cb;
   
-    const currentState = cb(store.getState());
-    const selectedStateRef = useRef(currentState);
-    selectedStateRef.current = currentState;
+    const selStateRef = useRef<RefState<R>>({ init: false });
+    if (!selStateRef.current.init) {
+      selStateRef.current = { init: true, value: cb(store.getState()) }
+    }
   
     const checkForUpdates = useCallback(() => {
       const newState = selectorRef.current(store.getState());
-      const isEqual = equalityFn(selectedStateRef.current, newState);
+      if (!selStateRef.current.init) {
+        selStateRef.current = { init: true, value: newState };
+        forceRender(v => 0 - v);
+        return;
+      }
+
+      const isEqual = equalityFn(selStateRef.current.value, newState);
       if (!isEqual) {
+        selStateRef.current = { init: true, value: newState }
         forceRender(v => 0 - v);
       }
-    }, [store]);
+    }, [store, equalityFn]);
   
     useIsomorphicLayoutEffect(() => {
       return store.subscribe(checkForUpdates);
     }, [store, checkForUpdates]);
 
-    useDebugValue(selectedStateRef.current);
-    return selectedStateRef.current;
+    useDebugValue(selStateRef.current);
+    return selStateRef.current.value;
   }
 }
