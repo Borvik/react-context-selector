@@ -18,12 +18,12 @@ This component and examples were inspired by an article by [Daniel Merrill](http
 
 The usage is very similar to the usage of the context api, which you can read [in their documentation](https://reactjs.org/docs/context.html).
 
-The difference, you cannot use a context created via the context api, specifically you can't use the `useContext` hook nor `static contextType`.  The context created here also returns a hook tied to this context.
+The difference, you cannot use a context created via the context api, specifically you can't use the `useContext` hook nor `static contextType`.  The context created here also returns a `useSelector` hook and a `withSelector` method tied to this context.
 
 ```tsx
 import { createContext } from '@borvik/react-selector-context';
 
-const { Provider, Consumer, useSelector } = createContext({
+const { Provider, Consumer, useSelector, withSelector } = createContext({
   clicks: 0,
   time: 0,
   incrementClick: (_: number) => {},
@@ -83,4 +83,17 @@ const Timer: React.FC = () => {
     </Consumer>
   </div>;
 }
+```
+
+And an example using `withSelector` as a higher-order-component.
+
+```tsx
+class TimerBase extends React.Component<any> {
+  render() {
+    console.log('Render TIMER');
+    const { selectorValue: time } = this.props;
+    return <div><span>Time: {time}</span></div>;
+  }
+}
+const Timer = withSelector(cb => cb.time)(TimerBase);
 ```

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TestApp as NormalTestApp } from './normal-context';
 import { TestApp as SelectorTestApp } from './selector-context';
 import { TestApp as SelConsumerTestApp } from './sel-consumer-context';
+import { TestApp as SelHOCTestApp } from './sel-hoc-context';
 import './style.scss';
 
 const ModeOptions = {
@@ -9,6 +10,7 @@ const ModeOptions = {
   context: 'Normal React Context',
   selector_context: 'Selector Context',
   sel_consumer: 'Selector Consumer',
+  sel_hoc: 'Selector Higher-Order-Component',
 } as const;
 type ModeOptionsEnum = keyof typeof ModeOptions;
 
@@ -29,6 +31,7 @@ export function App(): JSX.Element {
         {mode === 'context' && <NormalTestApp />}
         {mode === 'selector_context' && <SelectorTestApp />}
         {mode === 'sel_consumer' && <SelConsumerTestApp />}
+        {mode === 'sel_hoc' && <SelHOCTestApp />}
       </header>
     </div>
   )
