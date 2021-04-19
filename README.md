@@ -18,12 +18,12 @@ This component and examples were inspired by an article by [Daniel Merrill](http
 
 The usage is very similar to the usage of the context api, which you can read [in their documentation](https://reactjs.org/docs/context.html).
 
-The difference, you cannot use a context created via the context api, and the context returned from _this_ `createContext` does not provide a consumer component, but rather a hook to go with it.
+The difference, you cannot use a context created via the context api, specifically you can't use the `useContext` hook nor `static contextType`.  The context created here also returns a hook tied to this context.
 
 ```tsx
 import { createContext } from '@borvik/react-selector-context';
 
-const { Provider, useSelector } = createContext({
+const { Provider, Consumer, useSelector } = createContext({
   clicks: 0,
   time: 0,
   incrementClick: (_: number) => {},
@@ -70,5 +70,17 @@ const Clicker: React.FC = ({}) => {
       <button onClick={() => incrementClick(1)}>Click Me</button>
     </div>
   );
+}
+```
+
+Here is an example using the `Consumer`.
+
+```tsx
+const Timer: React.FC = () => {
+  return <div>
+    <Consumer selector={cb => cb.time}>
+      {(time) => (<span>Time: {time}</span>)}
+    </Consumer>
+  </div>;
 }
 ```

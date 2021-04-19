@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { TestApp as NormalTestApp } from './normal-context';
 import { TestApp as SelectorTestApp } from './selector-context';
+import { TestApp as SelConsumerTestApp } from './sel-consumer-context';
 import './style.scss';
 
 const ModeOptions = {
   none: 'No Example',
   context: 'Normal React Context',
   selector_context: 'Selector Context',
+  sel_consumer: 'Selector Consumer',
 } as const;
 type ModeOptionsEnum = keyof typeof ModeOptions;
 
@@ -26,6 +28,7 @@ export function App(): JSX.Element {
         </div>
         {mode === 'context' && <NormalTestApp />}
         {mode === 'selector_context' && <SelectorTestApp />}
+        {mode === 'sel_consumer' && <SelConsumerTestApp />}
       </header>
     </div>
   )
