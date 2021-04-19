@@ -1,9 +1,13 @@
 {
   "name": "@borvik/react-selector-context",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "repository": "github:Borvik/react-selector-context",
+  "bugs": {
+    "url": "https://github.com/Borvik/react-selector-context/issues"
+  },
   "scripts": {
     "start": "webpack serve",
     "build:script": "tsc",
