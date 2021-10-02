@@ -1,6 +1,6 @@
 {
   "name": "@borvik/react-selector-context",
-  "version": "0.1.0-alpha.4",
+  "version": "0.1.0-alpha.5",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "webpack serve",
-    "build:script": "tsc",
+    "build:script": "tsc -p tsconfig.prod.json",
     "build:clean": "rimraf dist",
     "build": "npm run build:clean && npm run build:script"
   },
