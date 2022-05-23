@@ -10,7 +10,7 @@ export interface SelectorInternalContext<T = any> {
 export interface ProviderProps<T> {
   value?: T
 }
-export type ProviderType<T> = React.FC<ProviderProps<T>>;
+export type ProviderType<T> = React.FC<React.PropsWithChildren<ProviderProps<T>>>;
 
 export type EqualityCheckFn = (a: unknown, b: unknown) => boolean;
 export type SelectorCallback<T, R> = (state: T) => R;
