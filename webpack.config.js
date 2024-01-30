@@ -80,11 +80,13 @@ module.exports = {
   ],
 
   devServer: {
-    contentBase: path.join(__dirname, 'public'),
-    contentBasePublicPath: '/',
     hot: true,
     liveReload: true,
     compress: true,
     port: parseInt(process.env.PORT, 10) || 3000,
+    static: {
+      directory: path.join(__dirname, 'public'),
+      publicPath: '/',
+    }
   },
 };
