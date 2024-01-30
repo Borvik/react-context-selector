@@ -22,16 +22,17 @@ export function App(): JSX.Element {
   return (
     <div className="App">
       <header className="App-header">
-        <img src="/logo.svg" style={{maxHeight: '40vmin'}} className="App-logo" alt="logo" />
         <div>
           <select onChange={(e) => setMode(e.target.value as ModeOptionsEnum)} value={mode}>
             {ModeKeys.map(k => (<option key={k} value={k}>{ModeOptions[k]}</option>))}
           </select>
         </div>
-        {mode === 'context' && <NormalTestApp />}
-        {mode === 'selector_context' && <SelectorTestApp />}
-        {mode === 'sel_consumer' && <SelConsumerTestApp />}
-        {mode === 'sel_hoc' && <SelHOCTestApp />}
+        <div className='sample-app'>
+          {mode === 'context' && <NormalTestApp />}
+          {mode === 'selector_context' && <SelectorTestApp />}
+          {mode === 'sel_consumer' && <SelConsumerTestApp />}
+          {mode === 'sel_hoc' && <SelHOCTestApp />}
+        </div>
       </header>
     </div>
   )

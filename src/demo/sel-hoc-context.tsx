@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { createContext } from '../library';
+import { useRenderCount } from './useRenderCount';
 
 const { Provider, withSelector } = createContext({
   clicks: 0,
@@ -7,6 +8,16 @@ const { Provider, withSelector } = createContext({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   incrementClick: (_: number) => {},
 })
+
+const ClickerLabel = function({clicks}: {clicks: number}) {
+  const renderCount = useRenderCount();
+  return <span>Clicks: {clicks} / Render: {renderCount}</span>
+}
+
+const TimerLabel = function({time}: {time: number}) {
+  const renderCount = useRenderCount();
+  return <><span>Time: {time}</span><span>Render: {renderCount}</span></>
+}
 
 const TestContextProvider: React.FC = ({ children }) => {
   const [clicks, setClicks] = useState(0);
@@ -36,7 +47,7 @@ class ClickerBase extends React.Component<any> {
     const { selectorValue: { clicks, incrementClick } } = this.props;
     return (
       <div>
-        <span>Clicks: {clicks}</span>
+        <ClickerLabel clicks={clicks} />
         <button onClick={() => incrementClick(1)}>Click Me</button>
       </div>
     );
@@ -48,7 +59,7 @@ class TimerBase extends React.Component<any> {
   render() {
     console.log('Render TIMER');
     const { selectorValue: time } = this.props;
-    return <div><span>Time: {time}</span></div>;
+    return <div><TimerLabel time={time} /></div>;
   }
 }
 const Timer = withSelector(cb => cb.time)(TimerBase);

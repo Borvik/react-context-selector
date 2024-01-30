@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { createContext } from '../library';
+import { useRenderCount } from './useRenderCount';
 
 const { Provider, useSelector } = createContext({
   clicks: 0,
@@ -32,11 +33,12 @@ const TestContextProvider: React.FC = ({ children }) => {
 
 const Clicker: React.FC = () => {
   console.log('Render CLICKER');
+  const renderCount = useRenderCount();
   const { clicks, incrementClick } = useSelector(cb => ({clicks: cb.clicks, incrementClick: cb.incrementClick}));
 
   return (
     <div>
-      <span>Clicks: {clicks}</span>
+      <span>Clicks: {clicks} / Render: {renderCount}</span>
       <button onClick={() => incrementClick(1)}>Click Me</button>
     </div>
   );
@@ -44,8 +46,9 @@ const Clicker: React.FC = () => {
 
 const Timer: React.FC = () => {
   console.log('Render TIMER');
+  const renderCount = useRenderCount();
   const time = useSelector(cb => cb.time);
-  return <div><span>Time: {time}</span></div>;
+  return <div><span>Time: {time}</span><span>Render: {renderCount}</span></div>;
 }
 
 export const TestApp: React.FC = () => {

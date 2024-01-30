@@ -8,7 +8,8 @@ import { createUseGetter } from './useGetter';
 import { createContextSetter } from './useSetter';
 import { createUseState } from './stateHook';
 
-export function createContext<T>(initialState: T): SelectorContext<T> {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function createContext<T extends object>(initialState: T): SelectorContext<T> {
   const ReactSelectorContext = React.createContext<SelectorInternalContext<T> | null>(null);
 
   if (process.env.NODE_ENV !== 'production') {

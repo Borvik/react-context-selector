@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useRenderCount } from './useRenderCount';
 
 const TestContext = React.createContext({
   clicks: 0,
@@ -31,11 +32,12 @@ const TestContextProvider: React.FC = ({ children }) => {
 
 const Clicker: React.FC = () => {
   console.log('Render CLICKER');
+  const renderCount = useRenderCount();
   const { clicks, incrementClick } = useContext(TestContext);
 
   return (
     <div>
-      <span>Clicks: {clicks}</span>
+      <span>Clicks: {clicks} / Render: {renderCount}</span>
       <button onClick={() => incrementClick(1)}>Click Me</button>
     </div>
   );
@@ -43,8 +45,9 @@ const Clicker: React.FC = () => {
 
 const Timer: React.FC = () => {
   console.log('Render TIMER');
+  const renderCount = useRenderCount();
   const { time } = useContext(TestContext);
-  return <div><span>Time: {time}</span></div>;
+  return <div><span>Time: {time}</span><span>Render: {renderCount}</span></div>;
 }
 
 export const TestApp: React.FC = () => {
