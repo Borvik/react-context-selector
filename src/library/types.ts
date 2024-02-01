@@ -1,20 +1,24 @@
 import React from "react";
 
+export type UpdaterCallback<T> = (newState: Partial<T> | ((state: T) => Partial<T>)) => void;
 export type UnsubscribeCallback = () => void;
 export type SubscriberCallback = () => void;
 export interface SelectorInternalContext<T = any> {
   subscribe: (cb: SubscriberCallback) => UnsubscribeCallback
   getState: () => T
+  getUpdater: () => UpdaterCallback<T>
 }
 
 export interface ProviderProps<T> {
   value?: T
+  initialValue?: Partial<T>
 }
 export type ProviderType<T> = React.FC<React.PropsWithChildren<ProviderProps<T>>>;
 
 export type EqualityCheckFn = (a: unknown, b: unknown) => boolean;
 export type SelectorCallback<T, R> = (state: T) => R;
 export type UseSelectorHookDef<T> = <R>(cb: SelectorCallback<T, R>, equalityFn?: EqualityCheckFn) => R
+export type UseStateHookDef<T> = <R>(cb: SelectorCallback<T, R>, equalityFn?: EqualityCheckFn) => [R, UpdaterCallback<T>]
 
 export interface ConsumerProps<T, R = any> {
   selector: SelectorCallback<T, R>
@@ -32,4 +36,7 @@ export interface SelectorContext<T> {
   Consumer: ConsumerType<T>
   useSelector: UseSelectorHookDef<T>
   withSelector: SelectorHOC<T>
+  useSetter: () => UpdaterCallback<T>
+  useGetter: () => (() => T)
+  useState: UseStateHookDef<T>
 }

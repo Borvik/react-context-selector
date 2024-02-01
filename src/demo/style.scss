@@ -1,1 +1,13 @@
 @use './styles-demo.scss' as demo;
+
+.sample-app {
+  display: flex;
+  gap: 1em;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    padding: .5em;
+  }
+}
