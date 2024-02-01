@@ -21,7 +21,7 @@ The usage is very similar to the usage to a mix of the context api and state, wh
 The difference, you cannot use a context created via the context api, specifically you can't use the `useContext` hook nor `static contextType`.  The context created here also returns a `useSelector` hook and a `withSelector` method tied to this context.  It also returns a `useSetter`, `useGetter` and a `useState`.
 
 > [!WARNING]
-> While using this like a state provider is preferred way - it does break the `value` attribute you can pass to the provider.
+> While using this like a state provider is the preferred way - it does break the `value` attribute you can pass to the provider.
 > As long as the provider doesn't re-render, all your state changes should be fine - but if you are using `value` and the provider re-renders, it will reset the data store the the contents of `value`.
 
 ```tsx
