@@ -2,8 +2,6 @@ import React, { PropsWithChildren, useCallback, useMemo, useRef } from 'react';
 import { ProviderProps, SelectorInternalContext, SubscriberCallback, UnsubscribeCallback, UpdaterCallback } from './types';
 import { useIsomorphicLayoutEffect } from './utils/useIsomorphicLayoutEffect';
 
-// type RefState<T> = {init: false} | {init: true, value: T};
-
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function createProvider<T extends object>(Context: React.Context<SelectorInternalContext<T> | null>, initialState: T) {
   return function Provider({ children, value, initialValue }: PropsWithChildren<ProviderProps<T>>): JSX.Element {
