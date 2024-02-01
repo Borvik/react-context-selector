@@ -2,7 +2,7 @@
 
 What is `react-selector-context`?
 
-Simply put, it provides for the ability to use a react context in a more redux like manner.
+Simply put, it provides for the ability to use a react context in a more redux and state like manner.
 
 There is one big advantage to using some like react-redux. Re-render performance.
 
@@ -16,9 +16,9 @@ This component and examples were inspired by an article by [Daniel Merrill](http
 
 # Usage
 
-The usage is very similar to the usage of the context api, which you can read [in their documentation](https://reactjs.org/docs/context.html).
+The usage is very similar to the usage to a mix of the context api and state, which you can read [in their documentation](https://reactjs.org/docs/context.html).
 
-The difference, you cannot use a context created via the context api, specifically you can't use the `useContext` hook nor `static contextType`.  The context created here also returns a `useSelector` hook and a `withSelector` method tied to this context.
+The difference, you cannot use a context created via the context api, specifically you can't use the `useContext` hook nor `static contextType`.  The context created here also returns a `useSelector` hook and a `withSelector` method tied to this context.  It also returns a `useSetter`, `useGetter` and a `useState`.
 
 ```tsx
 import { createContext } from '@borvik/react-selector-context';
@@ -96,4 +96,30 @@ class TimerBase extends React.Component<any> {
   }
 }
 const Timer = withSelector(cb => cb.time)(TimerBase);
+```
+
+But, `createContext` here also returns some state-like functions `useGetter`, `useSetter`, and `useState`.
+
+`useGetter` returns a fuction that will give you the full current state from the provider.  This can be useful in event handlers where you don't really need your component to rerender as the state changes - but temporarily grabbing data to do validation is handy. Currently I don't have a proper example of this.
+
+`useSetter` returns a function that allows you to alter the data inside the provider. You may specify a partial state, or a callback function that receives the current state and returns a partial state - just like React's built-in setState (for class components).
+
+`useState` (not to be confused with React's version) takes selector callback function to get just the data you want, just like the `useSelector` - but, it returns a tuple, containing first the data you requested, but also the same setting function from `useSetter`.
+
+```tsx
+const { Provider, useState: useClickState } = createContext({
+  clicks: 0,
+  time: 0,
+});
+
+const Clicker: React.FC = () => {
+  const [clicks, setClickState] = useClickState(cb => cb.clicks);
+
+  return (
+    <div>
+      <span>Clicks: {clicks}</span>
+      <button onClick={() => setClickState(p => ({ clicks: p.clicks + 1 }))}>Click Me</button>
+    </div>
+  );
+}
 ```
