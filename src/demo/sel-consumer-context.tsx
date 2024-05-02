@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
 import { createContext } from '../library';
 import { useRenderCount } from './useRenderCount';
 
@@ -9,7 +9,7 @@ const { Provider, Consumer } = createContext({
   incrementClick: (_: number) => {},
 })
 
-const TestContextProvider: React.FC = ({ children }) => {
+const TestContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [clicks, setClicks] = useState(0);
   const [time, setTime] = useState(0);
 

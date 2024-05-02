@@ -26,10 +26,10 @@ export interface ConsumerProps<T, R = any> {
   children: (value: R) => React.ReactElement<any, any> | null
   equalityFn?: EqualityCheckFn
 }
-export type ConsumerType<T> = <R = any>(props: React.PropsWithChildren<ConsumerProps<T, R>>, context?: any) => React.ReactElement<any, any> | null;
+export type ConsumerType<T> = <R = any>(props: ConsumerProps<T, R>, context?: any) => React.ReactElement<any, any> | null;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type SelectorHOC<T> = <R>(selector: SelectorCallback<T, R>, equalityFn?: EqualityCheckFn | undefined) => <P extends object>(WrappedComponent: React.ComponentType<P>) => React.ComponentClass<P>
+export type SelectorHOC<T> = <R>(selector: SelectorCallback<T, R>, equalityFn?: EqualityCheckFn | undefined) => <P extends object>(WrappedComponent: React.ComponentType<P & { selectorValue: R }>) => React.FC<P>
 
 export interface SelectorContext<T> {
   Provider: ProviderType<T>

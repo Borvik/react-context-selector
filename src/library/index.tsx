@@ -19,7 +19,7 @@ export function createContext<T extends object>(initialState: T): SelectorContex
   const Provider = createProvider(ReactSelectorContext, initialState);
   const useSelector = createUseSelector(ReactSelectorContext);
   const Consumer = createConsumer(useSelector);
-  const withSelector = createHOCFunction(Consumer);
+  const withSelector = createHOCFunction(useSelector);
   const useSetter = createContextSetter(ReactSelectorContext);
   const useGetter = createUseGetter(ReactSelectorContext);
   const useState = createUseState(ReactSelectorContext);

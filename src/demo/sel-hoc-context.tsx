@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
 import { createContext } from '../library';
 import { useRenderCount } from './useRenderCount';
 
@@ -19,7 +19,7 @@ const TimerLabel = function({time}: {time: number}) {
   return <><span>Time: {time}</span><span>Render: {renderCount}</span></>
 }
 
-const TestContextProvider: React.FC = ({ children }) => {
+const TestContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [clicks, setClicks] = useState(0);
   const [time, setTime] = useState(0);
 
