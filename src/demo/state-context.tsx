@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import { createContext } from '../library';
 import { useRenderCount } from './useRenderCount';
 
@@ -7,7 +7,7 @@ const { Provider, useState: useClickState } = createContext({
   time: 0,
 })
 
-const TestContextProvider: React.FC = ({ children }) => {
+const TestContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return <Provider>{children}</Provider>
 }
 
